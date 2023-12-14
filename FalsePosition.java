@@ -1,4 +1,4 @@
-class Bisection {
+class FalsePosition {
     public static void main(String[] args) {
         double tol = 0.0001; //tolerancia
         double a = 4; //primeiro ponto do intervalo
@@ -19,7 +19,7 @@ class Bisection {
             return 0;
         }
 
-        double c = (a + b) / 2;
+        double c = a - (((b-a) * f(a)) / (f(b) - f(a)));
         double fc = f(c); 
 
 
@@ -28,11 +28,11 @@ class Bisection {
             return c;
         } else if (fc * f(a) < 0) { //Caso f(c) * f(a) continue a dar menor que 0, significa que a raiz existe dentro do intervalo, mas ainda não foi encontrada.
             iteracaoAtual++;        //Então, o contador de iterações é incrementado e a função é chamada novamente.
-            System.out.println(iteracaoAtual); //Mostra a iteração atual, a fim de saber quantas iterações foram necessárias para chegar a um resultado.
+            System.out.println(iteracaoAtual);
             return bisseccao(a, c, tol, iteracoes, iteracaoAtual);
         } else {
             iteracaoAtual++;        //Caso não haja diferença de sinal entre A e C, então procura a raíz entre C e B e incrementa o contador.
-            System.out.println(iteracaoAtual); //Mesmo motivo do bloco acima, saber o número de iteraçoes.
+            System.out.println(iteracaoAtual);
             return bisseccao(b, c, tol, iteracoes, iteracaoAtual);
         }
     }
@@ -50,5 +50,7 @@ class Bisection {
         double resultFracionado = Math.log(difBA / tol) / Math.log(2);
         return Math.ceil(resultFracionado);
     }
+
+
 
 }
