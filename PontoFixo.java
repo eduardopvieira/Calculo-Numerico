@@ -1,18 +1,18 @@
-class Bisection {
+class PontoFixo {
     public static void main(String[] args) {
         double tol = 0.0001; //tolerancia
-        double a = -1; //primeiro ponto do intervalo
-        double b = 10; //segundo ponto do intervalo
+        double a = 0; //primeiro ponto do intervalo
+        double b = 10000; //segundo ponto do intervalo
         double iteracoes = numIteracoes(a, b, tol);
         int iteracaoAtual = 0;
 
-        System.out.println("Número máximo de iteracoes: " + iteracoes);  //verificar o número de iterações retornado pelo código
+        System.out.println("Número de iteracoes: " + iteracoes);  //verificar o número de iterações retornado pelo código
         double result = bisseccao(a, b, tol, iteracoes, iteracaoAtual);
         System.out.println("Raiz aproximada: " + result);
         
     }
 
-    public static double bisseccao(double a, double b, double tol, double iteracoes, double iteracaoAtual) {
+    public static double bisseccao(double a, double b, double tol, double iteracoes, int iteracaoAtual) {
         
         //Limitador de iterações:
         if (iteracaoAtual >= iteracoes) {
@@ -23,16 +23,17 @@ class Bisection {
         double c = (a + b) / 2;
         double fc = f(c); 
 
+        
         if (Math.abs(fc) < tol)    { //Se o módulo de f(c) for menor que a tolerância, quer dizer que 'c' é a raiz, e o retorna.
-            System.out.println("Número de iterações: " + iteracaoAtual);
+            System.out.println("Iterações necessárias: " + iteracaoAtual);
             return c;
         } else if (fc * f(a) < 0) { //Caso f(c) * f(a) continue a dar menor que 0, significa que a raiz existe dentro do intervalo, mas ainda não foi encontrada.
             iteracaoAtual = iteracaoAtual + 1;        //Então, o contador de iterações é incrementado e a função é chamada novamente.
-            //System.out.println(iteracaoAtual);
+            System.out.println(iteracaoAtual); //Mostra a iteração atual, a fim de saber quantas iterações foram necessárias para chegar a um resultado.
             return bisseccao(a, c, tol, iteracoes, iteracaoAtual);
         } else {
             iteracaoAtual = iteracaoAtual + 1;        //Então, o contador de iterações é incrementado e a função é chamada novamente.
-            //System.out.println(iteracaoAtual);
+            System.out.println(iteracaoAtual); //Mesmo motivo do bloco acima, saber o número de iteraçoes.
             return bisseccao(b, c, tol, iteracoes, iteracaoAtual);
         }
     }
@@ -50,5 +51,4 @@ class Bisection {
         double resultFracionado = Math.log(difBA / tol) / Math.log(2);
         return Math.ceil(resultFracionado);
     }
-
 }
