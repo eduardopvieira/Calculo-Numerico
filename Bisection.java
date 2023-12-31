@@ -2,7 +2,7 @@ class Bisection {
     public static void main(String[] args) {
         double tol = 0.0001; //tolerancia
         double a = -1; //primeiro ponto do intervalo
-        double b = 10; //segundo ponto do intervalo
+        double b = 100; //segundo ponto do intervalo
         double iteracoes = numIteracoes(a, b, tol);
         int iteracaoAtual = 0;
 
