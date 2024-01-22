@@ -1,9 +1,4 @@
-
-
-//Esse modo funciona apenas quando não levado em conta o número máximo de iterações.
-
-
-
+//Esse modo funciona apenas quando não levado em conta o número máximo de iterações
 
 class FalsePosition {
     public static void main(String[] args) {

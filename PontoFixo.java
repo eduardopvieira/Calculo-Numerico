@@ -1,54 +1,61 @@
-class PontoFixo {
+public class PontoFixo {
+
     public static void main(String[] args) {
-        double tol = 0.0001; //tolerancia
-        double a = 0; //primeiro ponto do intervalo
-        double b = 10000; //segundo ponto do intervalo
-        double iteracoes = numIteracoes(a, b, tol);
-        int iteracaoAtual = 0;
-
-        System.out.println("Número de iteracoes: " + iteracoes);  //verificar o número de iterações retornado pelo código
-        double result = bisseccao(a, b, tol, iteracoes, iteracaoAtual);
-        System.out.println("Raiz aproximada: " + result);
+        double intervaloEsquerdo = 0;
+        double intervaloDireito = 2;
+        int limiteIteracoes = 100;
+        double tolerancia = 0.0001;
+        double x0 = 1;
         
-    }
-
-    public static double bisseccao(double a, double b, double tol, double iteracoes, int iteracaoAtual) {
-        
-        //Limitador de iterações:
-        if (iteracaoAtual >= iteracoes) {
-            System.out.println("Limite de iteracoes atingido. Nenhuma raiz encontrada.");
-            return 0;
-        }
-
-        double c = (a + b) / 2;
-        double fc = f(c); 
-
-        
-        if (Math.abs(fc) < tol)    { //Se o módulo de f(c) for menor que a tolerância, quer dizer que 'c' é a raiz, e o retorna.
-            System.out.println("Iterações necessárias: " + iteracaoAtual);
-            return c;
-        } else if (fc * f(a) < 0) { //Caso f(c) * f(a) continue a dar menor que 0, significa que a raiz existe dentro do intervalo, mas ainda não foi encontrada.
-            iteracaoAtual = iteracaoAtual + 1;        //Então, o contador de iterações é incrementado e a função é chamada novamente.
-            System.out.println(iteracaoAtual); //Mostra a iteração atual, a fim de saber quantas iterações foram necessárias para chegar a um resultado.
-            return bisseccao(a, c, tol, iteracoes, iteracaoAtual);
+        if (verificaIntervalo(intervaloEsquerdo, intervaloDireito) == true) {  //Verifica se f(a) * f(b) < 0
+            MetodoPontoFixo(x0, limiteIteracoes, tolerancia);   //Se sim, faz o método
         } else {
-            iteracaoAtual = iteracaoAtual + 1;        //Então, o contador de iterações é incrementado e a função é chamada novamente.
-            System.out.println(iteracaoAtual); //Mesmo motivo do bloco acima, saber o número de iteraçoes.
-            return bisseccao(b, c, tol, iteracoes, iteracaoAtual);
+            System.out.println("Não há raiz no intervalo"); //Se não, não há raiz no intervalo
+        }          
+
+    }
+
+//================================Função de verificação se f(a) * f(b) < 0================================
+    public static boolean verificaIntervalo(double a, double b) {
+        if (f(a) * f(b) < 0) {
+            return true;
+        } else {
+            return false;
         }
     }
 
-    //Cálculo da função em f(x)
+//============================================Função f(x)=================================================
+
     public static double f(double x) {
-        double result = (x * x) + (x) - 6; //A função escolhida deve ser alterada diretamente aqui.
-        return result;
+        double valor = Math.pow(x, 3) - 9 * x + 3;
+        return valor;
     }
 
+//==============================Função g(x) (Deve ser a função isolada)====================================
 
-    //Cálculo do número de iterações necessárias
-    public static double numIteracoes(double a, double b, double tol) {
-        double difBA = b - a;
-        double resultFracionado = Math.log(difBA / tol) / Math.log(2);
-        return Math.ceil(resultFracionado);
+    public static double g(double x) {
+        double valor = (Math.pow(x,3) + 3)/9;
+        return valor;
+    }
+
+//================================================Método===================================================
+    public static void MetodoPontoFixo(double x0, int limiteIteracoes, double tolerancia) {
+            double x1 = x0; //Define um x1 igual ao x0
+            double x2 = 0; //X2 zerado
+            int iteracoes = 0; //contador para iteracoes
+            double erro = 0; //erro (diferença entre x1 e x2)
+
+            do {
+                x2 = g(x1); //X2 recebe o valor de g(x1)
+                erro = Math.abs(x2 - x1); //Erro recebe o valor absoluto da diferença entre x1 e x2
+                System.out.println("ERRO: " + erro + " | X1: " + x1 + " | X2: " + x2); //Printa o erro, x1 e x2 para cada iteracao
+                x1 = x2; //Atribui x2 a x1
+                iteracoes++;
+            } while (iteracoes < limiteIteracoes && erro > tolerancia); //Continua enquanto a iteracao atual for menor que o limite de iteracoes 
+                                                                        //e a diferença entre x2 e x1 for maior que a tolerancia
+
+            System.out.println("Raiz: " + x2);
+            System.out.println("Iterações: " + iteracoes);
+            System.out.println("Erro: " + erro);
     }
 }
