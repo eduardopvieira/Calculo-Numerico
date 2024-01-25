@@ -1,10 +1,9 @@
-public class NewtonRaphson {
+public class Secante {
     public static void main(String[] args) {
         double x0 = -1.5;
-        double tol = 0.001;
-        double h = 0.000001;    
+        double tol = 0.0001;
 
-        double result = newtonRaphson(x0, tol, h);
+        double result = metodoSecante(x0, tol);
 
         if (!(result == 0)) {
             System.out.println("O método convergiu para a raiz: " + result);
@@ -14,34 +13,42 @@ public class NewtonRaphson {
     }
 
     public static double f(double x) {
-        return (x * x) + (2*x) - 8;
+        return (x * x ) + (2 * x) - 8;
     }
 
-    public static double derivada(double xk, double h) {
-        return (f(xk + h) - f(xk - h)) / (2 * h);
+    public static double calculoSecante(double xk, double xkAnterior) {
+        
+        double denominador = (f(xk) - f(xkAnterior)) / (xk - xkAnterior);
+        double calculo = xk - (f(xk) / denominador);
+
+        return calculo;
     }
 
-    public static double newtonRaphson(double x0, double tol, double h) {
-        double xk = x0;
+    public static double metodoSecante(double x0, double tol) {
+        // Definindo a segunda aproximação inicial com base na primeira aproximação
+        double x1 = x0 + 0.1; // Por exemplo, poderíamos adicionar um pequeno incremento a x0
+    
+        double xk = x1;
+        double xkAnterior = x0;
         double erro;
         int maxIteracoes = 100;
         int iteracaoAtual = 0;
-
+    
         do {
-            double derivadaXk = derivada(xk, h);
-            
-            if (derivadaXk == 0) {
+            double verificarSecante = calculoSecante(xk, xkAnterior);
+    
+            if (verificarSecante == 0) {
                 System.out.println("Derivada zero encontrada. O método não pode convergir.");
                 return 0;
             }
-
-            xk = xk - (f(xk) / derivadaXk);
+    
+            xk = calculoSecante(xk, xkAnterior);
             erro = Math.abs(f(xk));
             System.out.println("Iteração " + iteracaoAtual + ": xk = " + xk + ", Erro = " + erro);
             iteracaoAtual++;
-
+    
         } while(iteracaoAtual < maxIteracoes && erro >= tol);
-
+    
         if (erro <= tol) {
             return xk;
         } else {
@@ -49,4 +56,5 @@ public class NewtonRaphson {
             return 0;
         }
     }
+    
 }
