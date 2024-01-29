@@ -1,8 +1,8 @@
 class FalsePosition {
     public static void main(String[] args) {
         double tol = 0.0001; // tolerancia
-        double a = 1; // primeiro ponto do intervalo
-        double b = 10; // segundo ponto do intervalo
+        double a = -5; // primeiro ponto do intervalo
+        double b = -3; // segundo ponto do intervalo
         double iteracoes = numIteracoes(a, b, tol);
         int iteracaoAtual = 0;
         double result;
@@ -10,7 +10,6 @@ class FalsePosition {
         System.out.println("Número máximo de iteracoes: " + iteracoes);
         result = falsaPosicao(a, b, tol, iteracoes, iteracaoAtual);
         System.out.println("Raiz aproximada: " + result);
-        System.out.println("Número de iterações: " + (iteracaoAtual + 1));
     }
 
     public static double falsaPosicao(double a, double b, double tol, double iteracoes, int iteracaoAtual) {
@@ -25,12 +24,14 @@ class FalsePosition {
         double fc = f(c);
 
         if (Math.abs(fc) < tol) {
-            System.out.println(iteracaoAtual);
+            System.out.println("Número de iterações: " + (iteracaoAtual + 1));
             return c;
         } else if (fc * f(a) < 0) {
             iteracaoAtual = iteracaoAtual + 1;
+            System.out.println("a = " + a + ", b = " + b + ", c = " + c + ", fc = " + fc + ", iteracaoAtual = " + iteracaoAtual);
             return falsaPosicao(a, c, tol, iteracoes, iteracaoAtual);
         } else {
+            System.out.println("a = " + a + ", b = " + b + ", c = " + c + ", fc = " + fc + ", iteracaoAtual = " + iteracaoAtual);
             iteracaoAtual = iteracaoAtual + 1;
             return falsaPosicao(b, c, tol, iteracoes, iteracaoAtual);
         }
@@ -38,7 +39,7 @@ class FalsePosition {
 
     // Cálculo da função em f(x)
     public static double f(double x) {
-        double result = (x * x) + (x) - 15;
+        double result = (x * x) + (x) - 26;
         return result;
     }
 

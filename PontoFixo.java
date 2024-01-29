@@ -1,18 +1,17 @@
 public class PontoFixo {
 
     public static void main(String[] args) {
-        double intervaloEsquerdo = 0;
-        double intervaloDireito = 2;
-        int limiteIteracoes = 100;
-        double tolerancia = 0.0001;
-        double x0 = 1;
+        double intervaloEsquerdo = -0.9;
+        double intervaloDireito = 1;
+        int limiteIteracoes = 1000;
+        double tolerancia = 0.001;
+        double x0 = 0.3;
         
         if (verificaIntervalo(intervaloEsquerdo, intervaloDireito) == true) {  //Verifica se f(a) * f(b) < 0
             MetodoPontoFixo(x0, limiteIteracoes, tolerancia);   //Se sim, faz o método
         } else {
             System.out.println("Não há raiz no intervalo"); //Se não, não há raiz no intervalo
         }          
-
     }
 
 //================================Função de verificação se f(a) * f(b) < 0================================
@@ -27,14 +26,14 @@ public class PontoFixo {
 //============================================Função f(x)=================================================
 
     public static double f(double x) {
-        double valor = Math.pow(x, 3) - 9 * x + 3;
+        double valor = (x * x * x) - (12 * x * x) - 9;
         return valor;
     }
 
 //==============================Função g(x) (Deve ser a função isolada)====================================
 
     public static double g(double x) {
-        double valor = (Math.pow(x,3) + 3)/9;
+        double valor = (Math.cbrt((12 * x * x) + 9));
         return valor;
     }
 

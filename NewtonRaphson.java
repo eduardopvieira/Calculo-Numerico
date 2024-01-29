@@ -1,12 +1,12 @@
 public class NewtonRaphson {
     public static void main(String[] args) {
-        double x0 = -1.5;
+        double x0 = -29;
         double tol = 0.001;
         double h = 0.000001;    
 
         double result = newtonRaphson(x0, tol, h);
 
-        if (!(result == 0)) {
+        if (result != 0) {
             System.out.println("O método convergiu para a raiz: " + result);
         } else {
             System.out.println("Não foi possível encontrar uma raiz no número máximo de iterações.");
@@ -14,7 +14,7 @@ public class NewtonRaphson {
     }
 
     public static double f(double x) {
-        return (x * x) + (2*x) - 8;
+        return (x * x) + (x) - 26;
     }
 
     public static double derivada(double xk, double h) {
@@ -45,7 +45,7 @@ public class NewtonRaphson {
         if (erro <= tol) {
             return xk;
         } else {
-            System.out.println("Não foi possível encontrar uma raiz. Número de iterações: " + iteracaoAtual);
+            System.out.println("Não foi possível encontrar uma raiz. Número de iterações: " + (iteracaoAtual + 1));
             return 0;
         }
     }

@@ -23,17 +23,18 @@ class Bisection {
         double c = (a + b) / 2;
         double fc = f(c); 
 
+        System.out.println("C: " + c + " | Iteração atual: " + (iteracaoAtual + 1));
         if (Math.abs(fc) < tol)    { //Se o módulo de f(c) for menor que a tolerância, quer dizer que 'c' é a raiz, e o retorna.
-            System.out.println("Número de iterações: " + iteracaoAtual);
+            System.out.println("Número de iterações: " + (iteracaoAtual+1));
             return c;
         } else if (fc * f(a) < 0) { //Caso f(c) * f(a) continue a dar menor que 0, significa que a raiz existe dentro do intervalo, mas ainda não foi encontrada.
             iteracaoAtual = iteracaoAtual + 1;        //Então, o contador de iterações é incrementado e a função é chamada novamente.
             //System.out.println(iteracaoAtual);
             return bisseccao(a, c, tol, iteracoes, iteracaoAtual);
         } else {
-            iteracaoAtual = iteracaoAtual + 1;        //Então, o contador de iterações é incrementado e a função é chamada novamente.
+            iteracaoAtual = iteracaoAtual + 1;        //Senão, o contador de iterações é incrementado e a função é chamada novamente.
             //System.out.println(iteracaoAtual);
-            return bisseccao(b, c, tol, iteracoes, iteracaoAtual);
+            return bisseccao(b, c, tol, iteracoes, iteracaoAtual); //Dessa vez, será retornado pra bisseccao o valor de b, que será o novo a.
         }
     }
 
@@ -47,7 +48,7 @@ class Bisection {
     //Cálculo do número de iterações necessárias
     public static double numIteracoes(double a, double b, double tol) {
         double difBA = b - a;
-        double resultFracionado = Math.log(difBA / tol) / Math.log(2);
+        double resultFracionado = Math.log(difBA / tol) / Math.log(2); //Mesmo que Math.log(DifBA) - Math.log(tol) / Math.log(2)
         return Math.ceil(resultFracionado);
     }
 
