@@ -1,8 +1,8 @@
 public class NewtonRaphson {
     public static void main(String[] args) {
-        double x0 = -29;
-        double tol = 0.001;
-        double h = 0.000001;    
+        double x0 = 0;
+        double tol = 0.01;
+        double h = 0.01;    
 
         double result = newtonRaphson(x0, tol, h);
 
@@ -18,6 +18,16 @@ public class NewtonRaphson {
     }
 
     public static double derivada(double xk, double h) {
+        double xkh = f(xk+h);
+        System.out.println("f(xk+h): " + xkh);
+        double xkmenosh = f(xk-h);
+        System.out.println("f(xk-h): " + xkmenosh);
+        double doish = 2 * h;
+        System.out.println("2h: " + doish);
+        System.out.println("f(xk+h) - f(xk-h): " + (xkh - xkmenosh));
+        System.out.println("resultado:" + (f(xk + h) - f(xk - h)) / (2 * h));
+        System.out.println("====================");
+        
         return (f(xk + h) - f(xk - h)) / (2 * h);
     }
 
@@ -29,7 +39,7 @@ public class NewtonRaphson {
 
         do {
             double derivadaXk = derivada(xk, h);
-            
+            System.out.println("Derivada de xk: " + derivadaXk);
             if (derivadaXk == 0) {
                 System.out.println("Derivada zero encontrada. O método não pode convergir.");
                 return 0;
