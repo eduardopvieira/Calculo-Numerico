@@ -1,7 +1,7 @@
 public class Secante {
     public static void main(String[] args) {
-        double x0 = 1.5;
-        double tol = 0.01;
+        double x0 = 0.2;
+        double tol = 0.0001;
 
         double result = metodoSecante(x0, tol);
 
@@ -13,7 +13,9 @@ public class Secante {
     }
 
     public static double f(double x) {
-        return (x * x ) + (2 * x) - 8;
+        double var = 2*x;
+        double func = 2 * Math.cos(x) - Math.pow(Math.E, var); //A função escolhida deve ser alterada diretamente aqui.
+        return func;
     }
 
     public static double calculoSecante(double xk, double xkAnterior) {
@@ -28,8 +30,8 @@ public class Secante {
     public static double metodoSecante(double x0, double tol) {
         
         // Definindo a segunda aproximação inicial com base na primeira aproximação
-        double xk = x0 + 0.1; // Por exemplo, poderíamos adicionar um pequeno incremento a x0
-        double xkAnterior = x0;
+        double xk = 0.7; // Por exemplo, poderíamos adicionar um pequeno incremento a x0
+        double xkAnterior = 0.2;
         double valor;
         int maxIteracoes = 100;
         int iteracaoAtual = 0;

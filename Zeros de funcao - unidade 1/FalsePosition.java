@@ -1,9 +1,9 @@
 class FalsePosition {
     public static void main(String[] args) {
         double tol = 0.0001; // tolerancia
-        double a = -5; // primeiro ponto do intervalo
-        double b = -3; // segundo ponto do intervalo
-        double iteracoes = numIteracoes(a, b, tol);
+        double a = 0; // primeiro ponto do intervalo
+        double b = 2; // segundo ponto do intervalo
+        double iteracoes = 1000;
         int iteracaoAtual = 0;
         double result;
 
@@ -39,8 +39,9 @@ class FalsePosition {
 
     // Cálculo da função em f(x)
     public static double f(double x) {
-        double result = (x * x) + (x) - 26;
-        return result;
+        double var = 2*x;
+        double func = 2 * Math.cos(x) - Math.pow(Math.E, var); //A função escolhida deve ser alterada diretamente aqui.
+        return func;
     }
 
     // Cálculo do número de iterações necessárias

@@ -1,8 +1,8 @@
 class Bisection {
     public static void main(String[] args) {
         double tol = 0.0001; //tolerancia
-        double a = -1; //primeiro ponto do intervalo
-        double b = 100; //segundo ponto do intervalo
+        double a = 0; //primeiro ponto do intervalo
+        double b = 2; //segundo ponto do intervalo
         double iteracoes = numIteracoes(a, b, tol);
         int iteracaoAtual = 0;
 
@@ -40,8 +40,9 @@ class Bisection {
 
     //Cálculo da função em f(x)
     public static double f(double x) {
-        double result = (x * x) + (x) - 6; //A função escolhida deve ser alterada diretamente aqui.
-        return result;
+        double var = 2*x;
+        double func = 2 * Math.cos(x) - Math.pow(Math.E, var); //A função escolhida deve ser alterada diretamente aqui.
+        return func;
     }
 
 
