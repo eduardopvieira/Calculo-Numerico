@@ -10,49 +10,58 @@ class DecomposicaoLU {
 
         System.out.println("Digite o tamanho da matriz: ");
         tamanho = sc.nextInt();
-        double[][] matriz = new double [tamanho][tamanho];
-        double[][] matrizX = definirMatrizX(tamanho);
-
+        double[][] matrizA = new double [tamanho][tamanho];
+        double[] matrizB = new double[tamanho];
 
         System.out.println("1 - Digitar matriz manualmente");
         System.out.println("2 - Gerar matriz aleatoriamente");
         escolha = sc.nextInt();
         if (escolha == 1) {
-            matriz = digitarMatriz(tamanho, sc);
+            matrizA = digitarMatriz(tamanho, sc);
         } else {
-            matriz = gerarMatriz(tamanho);
+            matrizA = gerarMatriz(tamanho);
+        }
+
+        System.out.println("1 - Digitar matriz B manualmente");
+        System.out.println("2 - Gerar matriz B aleatoriamente");
+        escolha = sc.nextInt();
+        if (escolha == 1) {
+            matrizB = digitarMatrizB(tamanho, sc);
+        } else {
+            matrizB = gerarMatrizB(tamanho);
         }
 
         
         System.out.println("========== Matriz Original: ==========");
-        printarMatriz(matriz);
-        
-        double[][] matrizLower = gerarLower(matriz, tamanho);
-        System.out.println("========== Matriz Triangular Inferior: ==========");
-        printarMatriz(matrizLower);
+        printarMatriz(matrizA);
 
-        double[][] matrizUpper = gerarUpper(matriz, tamanho);
-        System.out.println("========== Matriz Triangular Superior: ==========");
-        printarMatriz(matrizUpper);
-        
-        System.out.println("========== Matriz Multiplicada: ========== ");
-        double[][] LxU = multiplicarMatrizes(matrizLower, matrizUpper);
-        printarMatriz(LxU);
+        //Criando as Matrizes L e U a partir da matriz original
+        double [][][]vetorMatrizes = dooLittle(matrizA);
+        double [][]L = vetorMatrizes[0];
+        double [][]U = vetorMatrizes[1];
 
-        double[] b = acharMatrizNx1(matrizUpper, matrizX);
-        System.out.println("========== b (a partir da LxU): ========== ");
-        printarMatriz(b);
 
-        //Resolvendo L * Y = b (ja sei quem são L e b, mas nao sei quem é Y)
-        double[] Y = solucionarSistemaLinear(matrizLower, b);
-        System.out.println("========== Y: ========== ");
+        System.out.println("==================== L ==================");
+        printarMatriz(L);
+
+        System.out.println("==================== U ==================");
+        printarMatriz(U);
+
+        //Resolvendo L * Y = B, para descobrir o Y. A substituição direta eh parecida com a retroativa, a diferença eh que ela eh
+        //própria para matrizes L (triangulares inferiores)
+        double[] Y = substituicaoDireta(L, matrizB);
+
+        System.out.println("==================== Y ==================");
         printarMatriz(Y);
 
-        //Resolvendo U * X = Y (ja sei quem são U e Y, mas nao sei quem é X)
-        double[] X = solucionarSistemaLinear(matrizUpper, Y);
-        System.out.println("========== X: ========== ");
+        //Resolvendo U * X = Y, para descobrir o X. Aqui é usada a substituição retroativa pq eh igual a direta, mas propria para
+        //matrizes triangulares superiores
+        double[] X = substituicaoRetroativa(U, Y);
+
+        System.out.println("==================== X ==================");
         printarMatriz(X);
 
+        
         sc.close();
     }
 
@@ -64,11 +73,21 @@ class DecomposicaoLU {
 
         for (int i = 0; i < tamanho; i++) {
             for (int j = 0; j < tamanho; j++) {
-                System.out.printf("[%d][%d]: ", i, j);
+                System.out.printf("[%d][%d]: ", (i+1), (j+1));
                 matriz[i][j] =  ler.nextInt();
             }
         }
         return matriz;
+    }
+
+    public static double[] digitarMatrizB(int tamanho, Scanner ler) {
+        double[] matrizB = new double[tamanho];
+        
+        for (int i = 0; i < tamanho; i++) {
+            System.out.printf("[%d][1]: ", (i+1) );
+            matrizB[i] = ler.nextDouble();
+        }
+        return matrizB;
     }
 
 
@@ -108,123 +127,80 @@ class DecomposicaoLU {
         return matriz;
     }
 
-    public static double[][] definirMatrizX(int tamanho) {
+    public static double[] gerarMatrizB(int tamanho) {
         
-        double[][] matriz = new double[tamanho][1];
-        double valor = 10;
+        double[] matriz = new double[tamanho];
+        Random rand = new Random();
 
-        for (int i = 0; i < tamanho; i++) {           
-                matriz[i][0] = valor;
-                valor += 10;     
+        for (int i = 0; i < tamanho; i++) {              
+            matriz[i] = rand.nextInt(10)+1;
         }
+
         return matriz;
-    }
+    }    
 
-    public static double[][] gerarLower(double[][] matrizOriginal, int tamanho) {
-        double[][] matrizNova = new double[tamanho][tamanho];
-        
-        for (int linhas = 0; linhas < tamanho; linhas++) {
-            for (int colunas = 0; colunas < tamanho; colunas++) {
-                if (linhas > colunas) {
-                    matrizNova[linhas][colunas] = matrizOriginal[linhas][colunas];
-                } else if (linhas == colunas) {
-                    matrizNova[linhas][colunas] = 1;
+    public static double[][][] dooLittle(double[][] matriz) {
+        int n = matriz.length;
+        double[][] L = new double[n][n];
+        double[][] U = new double[n][n];
+
+        for (int i = 0; i < n; i++) {
+            // Calculando a matriz U
+            for (int k = i; k < n; k++) {
+                double soma = 0.0;
+                for (int j = 0; j < i; j++) {
+                    soma += L[i][j] * U[j][k];
+                }
+                U[i][k] = matriz[i][k] - soma;
+            }
+
+            // Calculando a matriz L
+            for (int k = i; k < n; k++) {
+                if (i == k) {
+                    L[i][i] = 1; // Diagonal principal de L é 1
                 } else {
-                    matrizNova[linhas][colunas] = 0;
+                    double soma = 0.0;
+                    for (int j = 0; j < i; j++) {
+                        soma += L[k][j] * U[j][i];
+                    }
+                    L[k][i] = (matriz[k][i] - soma) / U[i][i];
                 }
             }
         }
-
-        return matrizNova;
+        return new double[][][]{L, U};
     }
 
-    public static double[][] gerarUpper(double[][] matrizOriginal, int tamanho) {
-        double[][] matrizNova = new double[tamanho][tamanho];
-        
-        for (int linhas = 0; linhas < tamanho; linhas++) {
-            for (int colunas = 0; colunas < tamanho; colunas++) {
-                if (linhas <= colunas) {
-                    matrizNova[linhas][colunas] = matrizOriginal[linhas][colunas];
-                } else {
-                    matrizNova[linhas][colunas] = 0;
-                }
+    public static double[] substituicaoDireta(double[][] matrizL, double[] b) {
+        int n = matrizL.length;
+        double[] y = new double[n];
+    
+        y[0] = b[0] / matrizL[0][0];
+    
+        for (int i = 1; i < n; i++) {
+            double soma = 0.0;
+            for (int j = 0; j < i; j++) {
+                soma += matrizL[i][j] * y[j];
             }
+            y[i] = (b[i] - soma) / matrizL[i][i];
         }
-        return matrizNova;
+    
+        return y;
     }
 
+    public static double[] substituicaoRetroativa(double[][] matrizU, double[] b) {
+        int n = matrizU.length;
+        double[] x = new double[n];
 
+        x[n - 1] = b[n - 1] / matrizU[n - 1][n - 1];
 
-    public static double[][] multiplicarMatrizes(double[][] matrizA, double[][] matrizB) {
-        int linhasA = matrizA.length;
-        int colunasA = matrizA[0].length;
-        int colunasB = matrizB[0].length;
-        
-        double matrizRetorno[][] = new double[linhasA][colunasB];
-
-        for (int i = 0; i < linhasA; i++) {
-            for (int j = 0; j < colunasB; j++) {
-                for (int k = 0; k < colunasA; k++) {
-                    matrizRetorno[i][j] += matrizA[i][k] * matrizB[k][j];
-                }
+        for (int i = n - 2; i >= 0; i--) {
+            double soma = 0.0;
+            for (int j = i + 1; j < n; j++) {
+                soma += matrizU[i][j] * x[j];
             }
+            x[i] = (b[i] - soma) / matrizU[i][i];
         }
 
-        return matrizRetorno;
-    }
-
-    public static double[] acharMatrizNx1(double[][] matrizA, double[][] matrizB) {
-        int linhasA = matrizA.length;
-        int colunasA = matrizA[0].length;
-        int colunasB = matrizB[0].length;
-        
-        double matrizRetorno[] = new double[linhasA];
-
-        for (int i = 0; i < linhasA; i++) {
-            for (int j = 0; j < colunasB; j++) {
-                for (int k = 0; k < colunasA; k++) {
-                    matrizRetorno[i] += matrizA[i][k] * matrizB[k][j];
-                }
-            }
-        }
-
-        return matrizRetorno;
-    }
-
-    public static double[] solucionarSistemaLinear(double[][] A, double[] b) {
-        
-        int tamanho = A.length;
-        double[] Y = new double[tamanho];
-
-        // Eliminação de Gauss
-        for (int i = 0; i < tamanho; i++) {
-            // Encontre o pivô
-            double pivo = A[i][i];
-
-            // Faça a linha do pivô ter o valor 1
-            for (int j = i; j < tamanho; j++) {
-                A[i][j] /= pivo;
-            }
-            b[i] /= pivo;
-
-            // Zere os elementos abaixo do pivô
-            for (int k = i + 1; k < tamanho; k++) {
-                double fator = A[k][i];
-                for (int j = i; j < tamanho; j++) {
-                    A[k][j] -= fator * A[i][j];
-                }
-                b[k] -= fator * b[i];
-            }
-        }
-
-        // Substituição retroativa para encontrar Y
-        for (int i = tamanho - 1; i >= 0; i--) {
-            Y[i] = b[i];
-            for (int j = i + 1; j < tamanho; j++) {
-                Y[i] -= A[i][j] * Y[j];
-            }
-        }
-
-        return Y;
+        return x;
     }
 }
