@@ -93,8 +93,5 @@ class EscalonamentoMatriz {
             }
         }
         return matriz;
-    }
-
-    
-    
+    }   
 }
