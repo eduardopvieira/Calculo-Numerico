@@ -6,10 +6,14 @@ public class Cholesky {
         int tamanho, escolha;
         Scanner sc = new Scanner(System.in);
        
-        // System.out.println("Digite o tamanho da matriz: ");
-        // tamanho = sc.nextInt();
-        double[][] matriz = {{1,2,3}, {4,5,6},{7,8,9}};
-        printarMatriz(matrizTransposta(matriz));
+        System.out.println("Digite o tamanho da matriz: ");
+        tamanho = sc.nextInt();
+        double matrizOriginal[][] = new double[tamanho][tamanho];
+        System.out.println("Digite sua matriz: ");
+        matrizOriginal = digitarMatrizSimetrica(tamanho, sc);
+        System.out.println("Sua matriz é: ");
+        printarMatriz(matrizOriginal);
+
         
         // double[][] matrizA = new double [tamanho][tamanho];
         // double[] matrizB = new double[tamanho];
@@ -32,8 +36,6 @@ public class Cholesky {
         // } else {
         //     matrizB = gerarMatrizB(tamanho);
         // }
-
-
 
 
     }
@@ -71,7 +73,7 @@ public class Cholesky {
 
         for (int i = 0; i < tamLinhas; i++) {
             for (int j = 0; j < tamColunas; j++) {
-                System.out.printf(matriz[i][j] + " ");
+                System.out.printf(" [%f] ",(matriz[i][j]));
             } System.out.println("");
         }
     }

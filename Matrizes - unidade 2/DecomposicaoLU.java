@@ -186,7 +186,7 @@ class DecomposicaoLU {
     
         return y;
     }
-
+//Substituicao retroativa adaptado para matrizes regulares inferiores. Testar.
     public static double[] substituicaoRetroativa(double[][] matrizU, double[] b) {
         int n = matrizU.length;
         double[] x = new double[n];
@@ -203,4 +203,21 @@ class DecomposicaoLU {
 
         return x;
     }
+
+    public static double[] substituicaoRetroativaLower(double[][] matrizL, double[] b) {
+        int n = matrizL.length;
+        double[] x = new double[n];
+
+        x[0] = b[0] / matrizL[0][0];
+
+        for (int i = 1; i < n; i++) {
+            double soma = 0.0;
+            for (int j = 0; j < i; j++) {
+                soma += matrizL[i][j] * x[j];
+            }
+            x[i] = (b[i] - soma) / matrizL[i][i];
+        }
+        return x;
+    }
+
 }
