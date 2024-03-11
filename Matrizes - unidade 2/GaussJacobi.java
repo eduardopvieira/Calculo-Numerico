@@ -2,6 +2,7 @@ import java.lang.Math;
 
 public class GaussJacobi {
     public static void main(String[] args) {
+        
         //Matriz principal
         Double[][] matrizA =
                 {{10.0, 2.0, 1.0},
@@ -26,10 +27,15 @@ public class GaussJacobi {
                 {0.0},
                 {0.0}};
 
+        //erro
         Double e = 0.05;
+
         Double d = e + 1;
+        
+        //numero inicial de iteracao (nao alterar)
         int k = 0;
 
+        
         if (diagonalDominante(matrizA) == false) {
 
             System.out.println("Sua matriz não é diagonal dominante, logo não é aplicável nesse método, "
