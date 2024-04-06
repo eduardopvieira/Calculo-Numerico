@@ -8,6 +8,7 @@ public class TrapezioComposto {
         a = sc.nextDouble();
         System.out.println("Digite o valor de b: ");
         b = sc.nextDouble();
+        sc.close();
 
         double n = b - a;
         double h = (b - a) / n;
@@ -22,6 +23,6 @@ public class TrapezioComposto {
     }
 
     public static double f(double x) {
-        return (x * x) + (3 * x) + 2;
+        return -(x * x) + (3 * x);
     }
 }
