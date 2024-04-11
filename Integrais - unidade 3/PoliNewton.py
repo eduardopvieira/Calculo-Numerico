@@ -33,5 +33,5 @@ points = [(0.2, 80), (0.3, 88), (0.5, 92)]  # Pontos a serem calculados
 polynomial = newton_polynomial(points)
 
 # Testando o polinômio em alguns valores de x
-print("P(0.4) =", polynomial(0.4))
+print("P(0.2) =", polynomial(0.2))
 

@@ -20,20 +20,22 @@ def euler_metodo(f, x0, y0, h, n):
 
 #função y' = f(x, y) que queremos resolver usando o método de Euler
 def f(x, y):
-    return x+y
+    return (x*x)+(y*y)
 
 # Valores iniciais e parâmetros do método de Euler
 x0 = 0
 y0 = 1
-h = 0.001  # Tamanho do passo
-n = 1000   # Número de passos
+h = 0.1  # Tamanho do passo
+n = 10   # Número de passos
 
 # Chamada da função para resolver a EDO usando o método de Euler
 x_vals, y_vals = euler_metodo(f, x0, y0, h, n)
 
 # Imprime os resultados se quiser
-#print("Valores de x:", x_vals)
-#print("Valores de y:", y_vals)
+for i in range(len(x_vals)):
+    print(f"({x_vals[i]}, {y_vals[i]})")
+
+
 
 # Plotar os pontos calculados
 plt.plot(x_vals, y_vals, marker='o', linestyle='-', color='b')

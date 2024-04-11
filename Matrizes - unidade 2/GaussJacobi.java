@@ -12,8 +12,8 @@ public class GaussJacobi {
         //Matriz auxiliar
         Double[][] matrizX =
                 {{0.0},
-                {0.0},
-                {0.0}};
+                 {0.0},
+                 {0.0}};
 
         //Matriz do =
         Double[][] matrizB =

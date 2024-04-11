@@ -16,12 +16,12 @@ def lagrange_polynomial(points):
     return P
 
 # Exemplo de uso:
-x = 0.4
-pontos = [(0.2, 80), (0.3, 88), (0.5, 92)]
+x = 1000 #esse x nao faz diferença mudar, apenas o passado como parametro
+pontos = [(0, 1), (1, 2), (2, 4), (3, 8)]
 polynomial = lagrange_polynomial(pontos)
 
-# Testando o polinômio em alguns valores de x
-print("P(0.4) =", polynomial(0.4))
+# Valor da função em dado valor de X.
+print("Ponto =", polynomial(1.5))
 
 
 

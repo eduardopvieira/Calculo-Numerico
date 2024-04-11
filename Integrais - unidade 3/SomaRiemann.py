@@ -19,6 +19,6 @@ a = 0 #intervalo inicial
 b = 3 #intervalo final
 n = 100000  # numero de retangulo
 
-# Calculate and print the approximate integral value
+#calcular e printar aproximaçao da area
 resultado = soma_riemann(a, b, n)
 print("Area total:", resultado)

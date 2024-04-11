@@ -43,9 +43,15 @@ print(retornar_fracao(det))
 
 print("________________________________________")
 i = np.linalg.inv(matriz)
-print("INVERSA: ")
+print("INVERSA FRACIONADA: ")
 for linha in i:
     print([retornar_fracao(elemento) for elemento in linha])
+
+print("________________________________________")
+i = np.linalg.inv(matriz)
+print("INVERSA NORMAL: ")
+for linha in i:
+    print(linha)
 
 print("________________________________________")
 print("MATRIZ DE PERMUTACAO: ")
@@ -66,13 +72,23 @@ print("_________________________________________")
 cond = np.linalg.cond(matriz)
 print("NUMERO DE CONDICIONAMENTO:")
 print(retornar_fracao(cond))
+print("NUMERO DE CONDICIONAMENTO NORMAL:")
+print (cond)
 
 print("________________________________________")
 eh_simetrica = is_simetrica(matriz)
 if (eh_simetrica == False):
     print("A MATRIZ NÃO É SIMÉTRICA, PORTANTO, NÃO DÁ PRA FAZER A DECOMPOSIÇÃO DE CHOLESKY")
 else:
-    print("Matriz de Permutacao (Decomposicao LU): ")
+    print("Matriz U por metodo de cholesky (fracionado): ")
     ch = cholesky(matriz)
     for linha in ch:
         print([retornar_fracao(elemento) for elemento in linha])
+    
+    print("Matriz U por metodo de cholesky (normal): ")
+    ch = cholesky(matriz)
+    for linha in ch:
+        print(linha)
+    
+
+
